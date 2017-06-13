@@ -1,5 +1,4 @@
 class Player extends Ship {
-    private game:Game;
     private level:Level;
 
     //declare player control keys
@@ -17,15 +16,14 @@ class Player extends Ship {
     //composition
     protected gun:Gun;
 
-    constructor(l:Level, g:Game){
+    constructor(l:Level){
         let element:string = "ship";
         let w:number = 54;
         let h:number = 56;
         let x = window.innerWidth/2 - w/2;
         let y = window.innerHeight - 300;
-        super(element,x,y,w,h);
+        super(l,element,x,y,w,h);
 
-        this.game = g;
         this.level = l;
         //set player control keys (w,s,a,d,f)
         this.upKey = 87;
@@ -39,8 +37,7 @@ class Player extends Ship {
         this.leftSpeed = 0;
         this.rightSpeed = 0;
 
-        this.gun = new Gun(this.level,this.game, this, this.width);
-
+    
         window.addEventListener("keydown", this.onKeyDown.bind(this));
         window.addEventListener("keyup", this.onKeyUp.bind(this));
     
@@ -75,7 +72,7 @@ class Player extends Ship {
                 this.rightSpeed = 10;
                 break;
             case this.fireKey:
-                this.gun.fire();
+                this.gun.fire(1);
                 break;
         }
     }

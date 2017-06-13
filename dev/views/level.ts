@@ -3,9 +3,10 @@
 /// <reference path="../player.ts"/>
 /// <reference path="../bullet.ts"/>
 /// <reference path="../enemyWave.ts"/>
-
+/// <reference path="../gun.ts"/>
 
 class Level implements View {
+    private ship:Ship;
     private game:Game;
     private player:Player;
     private wave:EnemyWave;
@@ -14,9 +15,10 @@ class Level implements View {
 
     constructor(g:Game){ 
         this.game = g;
-        this.player = new Player(this, this.game);
-        this.wave = new EnemyWave;
+        this.player = new Player(this);
+        this.wave = new EnemyWave(this);
         this.bullets = new Array<Bullet>();
+        let i = setInterval(()=>this.wave.fire(), 1000);
 
         requestAnimationFrame(() => this.gameLoop());
     }

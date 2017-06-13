@@ -9,17 +9,28 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var Bullet = (function () {
-    function Bullet(x, y) {
+    function Bullet(x, y, fireDirection, s) {
+        this.ship = s;
         this.x = x + 11;
-        this.y = y;
+        if (s instanceof Enemy) {
+            this.y = y + 60;
+        }
+        else {
+            this.y = y;
+        }
         this.width = 33;
         this.height = 48;
-        this.upSpeed = 8;
+        this.upSpeed = 8 * fireDirection;
         this.createDiv();
         this.setPosition();
     }
     Bullet.prototype.createDiv = function () {
-        this.div = document.createElement("bullet");
+        if (this.ship instanceof Enemy) {
+            this.div = document.createElement("bulletEnemy");
+        }
+        else {
+            this.div = document.createElement("bullet");
+        }
         document.body.appendChild(this.div);
     };
     Bullet.prototype.setPosition = function () {
@@ -44,12 +55,13 @@ var Bullet = (function () {
     return Bullet;
 }());
 var Ship = (function () {
-    function Ship(element, x, y, width, height) {
+    function Ship(l, element, x, y, width, height) {
         this.createDiv(element);
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
+        this.gun = new Gun(l, this, width);
         this.setPosition();
     }
     Ship.prototype.getDiv = function () {
@@ -66,8 +78,8 @@ var Ship = (function () {
 }());
 var Enemy = (function (_super) {
     __extends(Enemy, _super);
-    function Enemy(element, x, y, width, height, speed) {
-        var _this = _super.call(this, element, x, y, width, height) || this;
+    function Enemy(l, element, x, y, width, height, speed) {
+        var _this = _super.call(this, l, element, x, y, width, height) || this;
         _this.downSpeed = speed;
         _this.utils = new Utils();
         return _this;
@@ -81,6 +93,10 @@ var Enemy = (function (_super) {
         this.y = this.y + this.downSpeed;
         this.x = this.x - leftSpeed;
         this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
+    };
+    Enemy.prototype.fireGun = function () {
+        var fireDirection = -1;
+        this.gun.fire(fireDirection);
     };
     Enemy.prototype.getX = function () {
         return this.x;
@@ -97,16 +113,23 @@ var Enemy = (function (_super) {
     return Enemy;
 }(Ship));
 var EnemyWave = (function () {
-    function EnemyWave() {
+    function EnemyWave(l) {
         var _this = this;
+        this.level = l;
         this.utils = new Utils();
         this.enemies = new Array();
         this.enemiesSmall = new Array();
-        this.interval = setInterval(function () { return _this.createEnemy("enemySmall", -57, 54, 56, 4); }, 1000);
+        var i = setInterval(function () { return _this.createEnemy("enemySmall", -57, 58, 55, 4); }, 1000);
     }
     EnemyWave.prototype.createEnemy = function (element, y, width, height, speed) {
         var randomX = this.utils.getRandomInt(100, window.innerWidth - 100);
-        this.enemiesSmall.push(new Enemy(element, randomX, y, width, height, speed));
+        this.enemiesSmall.push(new Enemy(this.level, element, randomX, y, width, height, speed));
+    };
+    EnemyWave.prototype.fire = function () {
+        for (var _i = 0, _a = this.enemiesSmall; _i < _a.length; _i++) {
+            var enemy = _a[_i];
+            enemy.fireGun();
+        }
     };
     EnemyWave.prototype.move = function () {
         for (var _i = 0, _a = this.enemiesSmall; _i < _a.length; _i++) {
@@ -127,15 +150,14 @@ var EnemyWave = (function () {
 }());
 var Player = (function (_super) {
     __extends(Player, _super);
-    function Player(l, g) {
+    function Player(l) {
         var _this = this;
         var element = "ship";
         var w = 54;
         var h = 56;
         var x = window.innerWidth / 2 - w / 2;
         var y = window.innerHeight - 300;
-        _this = _super.call(this, element, x, y, w, h) || this;
-        _this.game = g;
+        _this = _super.call(this, l, element, x, y, w, h) || this;
         _this.level = l;
         _this.upKey = 87;
         _this.downKey = 83;
@@ -146,7 +168,6 @@ var Player = (function (_super) {
         _this.downSpeed = 0;
         _this.leftSpeed = 0;
         _this.rightSpeed = 0;
-        _this.gun = new Gun(_this.level, _this.game, _this, _this.width);
         window.addEventListener("keydown", _this.onKeyDown.bind(_this));
         window.addEventListener("keyup", _this.onKeyUp.bind(_this));
         return _this;
@@ -174,7 +195,7 @@ var Player = (function (_super) {
                 this.rightSpeed = 10;
                 break;
             case this.fireKey:
-                this.gun.fire();
+                this.gun.fire(1);
                 break;
         }
     };
@@ -210,27 +231,37 @@ window.addEventListener("load", function () {
     new Game();
 });
 var Gun = (function () {
-    function Gun(l, g, p, pWidth) {
-        this.game = g;
-        this.player = p;
+    function Gun(l, s, sWidth) {
+        this.level = l;
+        this.ship = s;
         this.width = 17;
         this.height = 47;
-        this.x = pWidth / 2 - this.width / 2;
-        this.y = 0;
-        this.createDiv(p);
+        this.x = sWidth / 2 - this.width / 2;
+        if (s instanceof Enemy) {
+            this.y = 10;
+        }
+        else {
+            this.y = 0;
+        }
+        this.createDiv(s);
         this.setPosition();
     }
     Gun.prototype.setPosition = function () {
         this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
     };
-    Gun.prototype.createDiv = function (player) {
-        this.div = document.createElement("gun");
-        player.div.appendChild(this.div);
+    Gun.prototype.createDiv = function (ship) {
+        if (ship instanceof Enemy) {
+            this.div = document.createElement("gunEnemy");
+        }
+        else {
+            this.div = document.createElement("gun");
+        }
+        ship.div.appendChild(this.div);
     };
     Gun.prototype.move = function () {
     };
-    Gun.prototype.fire = function () {
-        var b = new Bullet(this.player.x, this.player.y);
+    Gun.prototype.fire = function (fireDirection) {
+        var b = new Bullet(this.ship.x, this.ship.y, fireDirection, this.ship);
         this.level.addBullet(b);
     };
     return Gun;
@@ -249,9 +280,10 @@ var Level = (function () {
     function Level(g) {
         var _this = this;
         this.game = g;
-        this.player = new Player(this, this.game);
-        this.wave = new EnemyWave;
+        this.player = new Player(this);
+        this.wave = new EnemyWave(this);
         this.bullets = new Array();
+        var i = setInterval(function () { return _this.wave.fire(); }, 1000);
         requestAnimationFrame(function () { return _this.gameLoop(); });
     }
     Level.prototype.gameLoop = function () {
@@ -317,9 +349,18 @@ var Start = (function () {
         this.createBtn();
     }
     Start.prototype.createBtn = function () {
+        var _this = this;
         this.btn = document.createElement("start");
         document.body.appendChild(this.btn);
+        this.btn.addEventListener("click", function () { return _this.startGame(); });
         this.btn.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
+    };
+    Start.prototype.startGame = function () {
+        var level = new Level(this.game);
+        this.game.showView(level);
+        console.log("clicked");
+        this.btn.remove();
+        this.btn = undefined;
     };
     return Start;
 }());

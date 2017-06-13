@@ -1,4 +1,5 @@
 class Bullet {
+    private ship:Ship;
 
     public div:HTMLElement;
     private x:number;
@@ -6,14 +7,21 @@ class Bullet {
     private width:number;
     private height:number;
     private upSpeed:number;
-    constructor(x:number, y:number){
+    constructor(x:number, y:number, fireDirection:number, s:Ship){
+        this.ship = s;
         this.x = x+11;
-        this.y = y;
+
+        if(s instanceof Enemy){
+            this.y = y + 60;
+        } else {
+            this.y = y;
+        }
+        
 
         this.width = 33;
         this.height = 48;
 
-        this.upSpeed = 8;
+        this.upSpeed = 8 * fireDirection;
 
         this.createDiv();
         this.setPosition();
@@ -21,7 +29,11 @@ class Bullet {
     }
 
     public createDiv(){
-        this.div = document.createElement("bullet");
+        if (this.ship instanceof Enemy){
+            this.div = document.createElement("bulletEnemy")
+        } else{
+            this.div = document.createElement("bullet");
+        }
         document.body.appendChild(this.div);
     }
     public setPosition(){

@@ -1,11 +1,12 @@
 /// <reference path="ship.ts"/>
 
 class Enemy extends Ship {
+    private level:Level;
     protected utils:Utils;
     protected downSpeed:number;
 
-    constructor(element:string,x:number,y:number,width:number,height:number, speed:number){
-        super(element,x,y,width,height);
+    constructor(l:Level, element:string,x:number,y:number,width:number,height:number, speed:number){
+        super(l,element,x,y,width,height);
 
         this.downSpeed = speed;
 
@@ -28,6 +29,11 @@ class Enemy extends Ship {
         this.x = this.x - leftSpeed;
 
         this.div.style.transform = "translate("+this.x+"px, "+this.y+"px)";
+    }
+
+    public fireGun(){
+        let fireDirection = -1;
+        this.gun.fire(fireDirection);
     }
     
     public getX():number{

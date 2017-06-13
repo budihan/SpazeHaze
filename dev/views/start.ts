@@ -21,9 +21,20 @@ class Start implements View {
         this.btn = document.createElement("start");
         document.body.appendChild(this.btn);
 
+        this.btn.addEventListener("click", ()=>this.startGame());
+
         //set position
         this.btn.style.transform = "translate("+this.x+"px, "+this.y+"px)";
         
 
+    }
+
+    private startGame(){
+        let level = new Level(this.game);
+        this.game.showView(level);
+        console.log("clicked")
+
+        this.btn.remove();
+        this.btn = undefined;
     }
 }

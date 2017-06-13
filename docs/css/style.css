@@ -53,8 +53,22 @@ gun {
     z-index: 0;
 }
 
+gunEnemy {
+    background-image: url(../images/gunEnemy.png);
+    width: 17px;
+    height: 47px;
+    z-index: 0;
+}
+
 bullet {
-    background-image: url(../images/bullet1.png);
+    background-image: url(../images/bullet.png);
+    width:33px;
+    height:48px;
+    z-index: 2;
+}
+
+bulletEnemy {
+    background-image: url(../images/bulletEnemy.png);
     width:33px;
     height:48px;
     z-index: 2;
