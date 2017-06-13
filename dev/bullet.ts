@@ -1,19 +1,19 @@
 class Bullet {
 
-    private div:HTMLElement;
+    public div:HTMLElement;
     private x:number;
     private y:number;
     private width:number;
     private height:number;
     private upSpeed:number;
     constructor(x:number, y:number){
-        this.x = x + 33;
+        this.x = x+11;
         this.y = y;
 
-        this.width = 22;
-        this.height = 61;
+        this.width = 33;
+        this.height = 48;
 
-        this.upSpeed = 4;
+        this.upSpeed = 8;
 
         this.createDiv();
         this.setPosition();
@@ -48,4 +48,6 @@ class Bullet {
     public getHeight():number{
         return this.height;
     }
+
+    
 }

@@ -1,5 +1,6 @@
 class Player extends Ship {
     private game:Game;
+    private level:Level;
 
     //declare player control keys
     private upKey: number;
@@ -16,15 +17,16 @@ class Player extends Ship {
     //composition
     protected gun:Gun;
 
-    constructor(g:Game){
+    constructor(l:Level, g:Game){
         let element:string = "ship";
-        let w:number = 124;
-        let h:number = 135
+        let w:number = 54;
+        let h:number = 56;
         let x = window.innerWidth/2 - w/2;
         let y = window.innerHeight - 300;
         super(element,x,y,w,h);
 
         this.game = g;
+        this.level = l;
         //set player control keys (w,s,a,d,f)
         this.upKey = 87;
         this.downKey = 83;
@@ -37,7 +39,7 @@ class Player extends Ship {
         this.leftSpeed = 0;
         this.rightSpeed = 0;
 
-        this.gun = new Gun(this.game, this, this.width);
+        this.gun = new Gun(this.level,this.game, this, this.width);
 
         window.addEventListener("keydown", this.onKeyDown.bind(this));
         window.addEventListener("keyup", this.onKeyUp.bind(this));
@@ -61,16 +63,16 @@ class Player extends Ship {
     onKeyDown(event:KeyboardEvent): void {
         switch(event.keyCode){
             case this.upKey:
-                this.upSpeed = 3;
+                this.upSpeed = 10;
                 break;
             case this.downKey:
-                this.downSpeed = 3;
+                this.downSpeed = 10;
                 break;
             case this.leftKey:
-                this.leftSpeed = 5;
+                this.leftSpeed = 10;
                 break;
             case this.rightKey:
-                this.rightSpeed = 5;
+                this.rightSpeed = 10;
                 break;
             case this.fireKey:
                 this.gun.fire();

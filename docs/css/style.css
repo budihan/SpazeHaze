@@ -12,31 +12,51 @@ body *{
     box-sizing: border-box;
     background-repeat: no-repeat;
 }
-ship {
-    background-image: url(../images/ship.png);
-    width: 124px;
-    height: 135px;
-    z-index: 3;
+
+start {
+    background-image: url(../images/start.png);
+    width:150px;
+    height:150px;
+    z-index: 1;
+    opacity: 0.1;
 }
 
-enemy {
+start:hover {
+    opacity: 1.0;
+}
+
+ship {
+    background-image: url(../images/ship.png);
+    width: 54px;
+    height: 56px;
+    z-index: 2;
+}
+
+enemyBig {
     background-image: url(../images/1.png);
     width: 120px;
     height: 185px;
-    z-index: 3;
+    z-index: 1;
+}
+
+enemySmall {
+    background-image: url(../images/2.png);
+    width: 58px;
+    height: 55px;
+    z-index: 1;
 }
 
 gun {
     background-image: url(../images/gun.png);
-    width: 22px;
-    height: 61px;
-    z-index: 4;
+    width: 17px;
+    height: 47px;
+    z-index: 0;
 }
 
 bullet {
     background-image: url(../images/bullet1.png);
-    width:58px;
-    height:85px;
+    width:33px;
+    height:48px;
     z-index: 2;
 }
 

@@ -1,3 +1,3 @@
-window.addEventListener("load", function() {
-    new Game();
-});
+// window.addEventListener("load", function() {
+//     new Game();
+// });
