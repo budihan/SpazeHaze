@@ -1,0 +1,90 @@
+body {
+    background-color: black;
+    font-size:22px;
+    overflow:hidden;
+    margin:0px; padding:0px;
+}
+
+body *{
+    display: block;
+    position: absolute;
+    margin: 0px; padding: 0px;
+    box-sizing: border-box;
+    background-repeat: no-repeat;
+}
+ship {
+    background-image: url(../images/ship.png);
+    width: 124px;
+    height: 135px;
+    z-index: 3;
+}
+
+enemy {
+    background-image: url(../images/1.png);
+    width: 120px;
+    height: 185px;
+    z-index: 3;
+}
+
+gun {
+    background-image: url(../images/gun.png);
+    width: 22px;
+    height: 61px;
+    z-index: 4;
+}
+
+bullet {
+    background-image: url(../images/bullet1.png);
+    width:58px;
+    height:85px;
+    z-index: 2;
+}
+
+background1{
+    background-image: url(../images/Nebula1.png);
+    width: 751px;
+    height: 564px;
+    opacity: 0.1;
+    top:-564px;
+    background-size: cover;
+    background-repeat: repeat;
+    z-index: 2;
+    animation: dustDown 100s linear infinite;
+}  
+
+background2 {
+    background-image: url(../images/Nebula3.png);
+    width: 791px;
+    height: 889px;
+    opacity: 0.2;
+    left:20px;
+    top: -900px;
+    background-size: cover;
+    background-repeat: repeat;
+    z-index: 2;
+    animation: dustDown 60s linear infinite;
+}
+
+background3 {
+    background-image: url(../images/violetcloud.png);
+    width: 1388px;
+    height: 744px;
+    opacity: 0.4;
+    left:600px;
+    top: -800px;
+    background-size: cover;
+    background-repeat: repeat;
+    z-index: 2;
+    animation: dustDown 150s linear infinite; 
+}
+
+
+@keyframes dustDown {
+    0% {
+        transform: translateY(0vh);
+    }
+
+    100% {
+        transform: translateY(200vh);
+    }
+}
