@@ -7,21 +7,21 @@ class Bullet {
     private width:number;
     private height:number;
     private upSpeed:number;
-    constructor(x:number, y:number, fireDirection:number, s:Ship){
+    constructor(x:number, y:number, fireDirection:number, s:Ship, speed:number){
         this.ship = s;
         this.x = x+11;
 
         if(s instanceof Enemy){
             this.y = y + 60;
         } else {
-            this.y = y;
+            this.y = y - 50;
         }
         
 
         this.width = 33;
         this.height = 48;
 
-        this.upSpeed = 8 * fireDirection;
+        this.upSpeed = speed * fireDirection;
 
         this.createDiv();
         this.setPosition();
@@ -60,6 +60,4 @@ class Bullet {
     public getHeight():number{
         return this.height;
     }
-
-    
 }

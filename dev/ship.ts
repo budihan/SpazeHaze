@@ -30,4 +30,20 @@ class Ship {
     protected setPosition(){
         this.div.style.transform = "translate("+this.x+"px, "+this.y+"px)";
     }
+
+     public getX():number{
+        return this.x;
+    }
+
+    public getY():number{
+        return this.y;
+    }
+
+    public getWidth():number{
+        return this.width;
+    }
+
+    public getHeight():number{
+        return this.height;
+}
 }

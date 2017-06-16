@@ -9,18 +9,18 @@ var __extends = (this && this.__extends) || (function () {
     };
 })();
 var Bullet = (function () {
-    function Bullet(x, y, fireDirection, s) {
+    function Bullet(x, y, fireDirection, s, speed) {
         this.ship = s;
         this.x = x + 11;
         if (s instanceof Enemy) {
             this.y = y + 60;
         }
         else {
-            this.y = y;
+            this.y = y - 50;
         }
         this.width = 33;
         this.height = 48;
-        this.upSpeed = 8 * fireDirection;
+        this.upSpeed = speed * fireDirection;
         this.createDiv();
         this.setPosition();
     }
@@ -74,6 +74,18 @@ var Ship = (function () {
     Ship.prototype.setPosition = function () {
         this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
     };
+    Ship.prototype.getX = function () {
+        return this.x;
+    };
+    Ship.prototype.getY = function () {
+        return this.y;
+    };
+    Ship.prototype.getWidth = function () {
+        return this.width;
+    };
+    Ship.prototype.getHeight = function () {
+        return this.height;
+    };
     return Ship;
 }());
 var Enemy = (function (_super) {
@@ -119,7 +131,7 @@ var EnemyWave = (function () {
         this.utils = new Utils();
         this.enemies = new Array();
         this.enemiesSmall = new Array();
-        var i = setInterval(function () { return _this.createEnemy("enemySmall", -57, 58, 55, 4); }, 1000);
+        this.interval = setInterval(function () { return _this.createEnemy("enemySmall", -57, 58, 55, 4); }, 4000);
     }
     EnemyWave.prototype.createEnemy = function (element, y, width, height, speed) {
         var randomX = this.utils.getRandomInt(100, window.innerWidth - 100);
@@ -146,6 +158,9 @@ var EnemyWave = (function () {
     EnemyWave.prototype.getEnemies = function () {
         return this.enemiesSmall;
     };
+    EnemyWave.prototype.removeWave = function () {
+        clearInterval(this.interval);
+    };
     return EnemyWave;
 }());
 var Player = (function (_super) {
@@ -163,7 +178,7 @@ var Player = (function (_super) {
         _this.downKey = 83;
         _this.leftKey = 65;
         _this.rightKey = 68;
-        _this.fireKey = 70;
+        _this.fireKey = 32;
         _this.upSpeed = 0;
         _this.downSpeed = 0;
         _this.leftSpeed = 0;
@@ -261,8 +276,17 @@ var Gun = (function () {
     Gun.prototype.move = function () {
     };
     Gun.prototype.fire = function (fireDirection) {
-        var b = new Bullet(this.ship.x, this.ship.y, fireDirection, this.ship);
-        this.level.addBullet(b);
+        var speed = 0;
+        if (this.ship instanceof Player) {
+            var speed_1 = 15;
+            var b = new Bullet(this.ship.x, this.ship.y, fireDirection, this.ship, speed_1);
+            this.level.addBullet(b);
+        }
+        else {
+            var speed_2 = 8;
+            var b = new Bullet(this.ship.x, this.ship.y, fireDirection, this.ship, speed_2);
+            this.level.addBullet(b);
+        }
     };
     return Gun;
 }());
@@ -273,6 +297,29 @@ var Utils = (function () {
         min = Math.ceil(min);
         max = Math.floor(max);
         return Math.floor(Math.random() * (max - min)) + min;
+    };
+    Utils.checkCollision = function (b, s) {
+        return (b.getX() < s.getX() + s.getWidth() &&
+            b.getX() + b.getWidth() > s.getX() &&
+            b.getY() < s.getY() + s.getHeight() &&
+            b.getHeight() + b.getY() > s.getY());
+    };
+    Utils.bulletOfScreen = function (b) {
+        return (b.getY() < -10 || b.getY() > window.innerHeight);
+    };
+    Utils.shipOffScreen = function (s) {
+        return (s.getY() > window.innerHeight);
+    };
+    Utils.playerOffScreen = function (p) {
+        if (p.getX() < 0 ||
+            p.getX() > window.innerWidth - 54 ||
+            p.getY() < 0 ||
+            p.getY() > window.innerHeight - 56) {
+            return true;
+        }
+        else {
+            return false;
+        }
     };
     return Utils;
 }());
@@ -290,7 +337,9 @@ var Level = (function () {
         var _this = this;
         this.player.move();
         this.wave.move();
-        this.collision();
+        this.enemyCollision();
+        this.playerCollision();
+        this.offscreen();
         for (var _i = 0, _a = this.bullets; _i < _a.length; _i++) {
             var b = _a[_i];
             b.move();
@@ -300,35 +349,68 @@ var Level = (function () {
     Level.prototype.addBullet = function (b) {
         this.bullets.push(b);
     };
-    Level.prototype.collision = function () {
+    Level.prototype.enemyCollision = function () {
         for (var _i = 0, _a = this.wave.getEnemies(); _i < _a.length; _i++) {
             var e = _a[_i];
             for (var _b = 0, _c = this.bullets; _b < _c.length; _b++) {
                 var b = _c[_b];
-                if (b.getX() < e.getX() + e.getWidth() &&
-                    b.getX() + b.getWidth() > e.getX() &&
-                    b.getY() < e.getY() + e.getHeight() - 20 &&
-                    b.getHeight() + b.getY() > e.getY()) {
-                    console.log("HIT");
-                    this.removeShip(e);
+                if (Utils.checkCollision(b, e)) {
+                    this.removeEnemy(e);
                     this.removeBullet(b);
                 }
-                if (b.getY() < -10) {
-                    this.removeBullet(b);
-                }
-            }
-            if (e.getY() > window.innerHeight) {
-                console.log("get rid of this div");
-                this.removeShip(e);
             }
         }
     };
-    Level.prototype.removeShip = function (e) {
+    Level.prototype.playerCollision = function () {
+        for (var _i = 0, _a = this.bullets; _i < _a.length; _i++) {
+            var b = _a[_i];
+            if (Utils.checkCollision(b, this.player)) {
+                this.removePlayer(this.player);
+            }
+        }
+    };
+    Level.prototype.offscreen = function () {
+        for (var _i = 0, _a = this.bullets; _i < _a.length; _i++) {
+            var b = _a[_i];
+            if (Utils.bulletOfScreen(b)) {
+                this.removeBullet(b);
+            }
+        }
+        for (var _b = 0, _c = this.wave.getEnemies(); _b < _c.length; _b++) {
+            var e = _c[_b];
+            if (Utils.shipOffScreen(e)) {
+                this.removeEnemy(e);
+            }
+        }
+    };
+    Level.prototype.playerOffScreen = function () {
+        if (Utils.playerOffScreen(this.player)) {
+        }
+    };
+    Level.prototype.removeEnemy = function (e) {
         e.div.remove();
         var i = this.wave.getEnemies().indexOf(e);
         if (i != -1) {
             this.wave.getEnemies().splice(i, 1);
         }
+    };
+    Level.prototype.removePlayer = function (p) {
+        p.div.remove();
+        this.player = undefined;
+        for (var _i = 0, _a = this.wave.getEnemies(); _i < _a.length; _i++) {
+            var e = _a[_i];
+            e.div.remove();
+            e = undefined;
+        }
+        for (var _b = 0, _c = this.bullets; _b < _c.length; _b++) {
+            var b = _c[_b];
+            b.div.remove();
+            b = undefined;
+        }
+        this.wave.removeWave();
+        this.wave = undefined;
+        var stop = new Stop(this.game);
+        this.game.showView(stop);
     };
     Level.prototype.removeBullet = function (b) {
         b.div.remove();
@@ -363,5 +445,36 @@ var Start = (function () {
         this.btn = undefined;
     };
     return Start;
+}());
+var Stop = (function () {
+    function Stop(g) {
+        this.game = g;
+        this.createDiv();
+    }
+    Stop.prototype.createDiv = function () {
+        var _this = this;
+        this.score = document.createElement("score");
+        this.score.innerHTML = "some text";
+        document.body.appendChild(this.score);
+        var scoreX = window.innerWidth / 2 - 150;
+        var scoreY = window.innerHeight / 2 - 100;
+        this.score.style.transform = "translate(" + scoreX + "px, " + scoreY + "px)";
+        this.btn = document.createElement("start");
+        document.body.appendChild(this.btn);
+        var btnX = window.innerWidth / 2 - 75;
+        var btnY = window.innerHeight / 2 - 75;
+        this.btn.style.transform = "translate(" + btnX + "px, " + btnY + "px)";
+        this.btn.addEventListener("click", function () { return _this.startGame(); });
+    };
+    Stop.prototype.startGame = function () {
+        var level = new Level(this.game);
+        this.game.showView(level);
+        console.log("clicked");
+        this.score.remove();
+        this.score = undefined;
+        this.btn.remove();
+        this.btn = undefined;
+    };
+    return Stop;
 }());
 //# sourceMappingURL=main.js.map

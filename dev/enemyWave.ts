@@ -1,7 +1,7 @@
 class EnemyWave {
     private level:Level;
 
-    public fireInterval:number
+    public interval:number
     private enemies:Array<Enemy>;
     private enemiesFast:Array<Enemy>;
     private enemiesSmall:Array<Enemy>;
@@ -14,7 +14,7 @@ class EnemyWave {
         this.enemiesSmall = new Array<Enemy>();
 
         //Spawner for small ships
-        let i = setInterval(()=>this.createEnemy("enemySmall",-57, 58, 55, 4), 1000);
+        this.interval = setInterval(()=>this.createEnemy("enemySmall",-57, 58, 55, 4), 4000);
         
 
         //this.intervalSmall = setInterval(()=>this.createEnemy("enemyBig", randomX, -57, 54, 56 , 4),3000);
@@ -50,6 +50,10 @@ class EnemyWave {
 
     public getEnemies():Array<Enemy>{
         return this.enemiesSmall;
+    }
+
+    public removeWave(){
+        clearInterval(this.interval);
     }
     
 }

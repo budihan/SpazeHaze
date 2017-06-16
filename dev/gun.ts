@@ -44,7 +44,17 @@ class Gun {
     }
 
     public fire(fireDirection:number){
-        let b:Bullet = new Bullet(this.ship.x, this.ship.y, fireDirection, this.ship);
-        this.level.addBullet(b);
+        let speed = 0;
+        if (this.ship instanceof Player){
+            let speed = 15;
+            let b:Bullet = new Bullet(this.ship.x, this.ship.y, fireDirection, this.ship, speed);
+            this.level.addBullet(b);
+        } else {
+            let speed = 8;
+            let b:Bullet = new Bullet(this.ship.x, this.ship.y, fireDirection, this.ship, speed);
+            this.level.addBullet(b);
+        }
+
+        
     }
 }

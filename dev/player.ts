@@ -30,7 +30,7 @@ class Player extends Ship {
         this.downKey = 83;
         this.leftKey = 65;
         this.rightKey = 68;
-        this.fireKey = 70;
+        this.fireKey = 32;
 
         this.upSpeed = 0;
         this.downSpeed = 0;
