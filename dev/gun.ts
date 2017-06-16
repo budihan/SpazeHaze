@@ -39,8 +39,8 @@ class Gun {
         ship.div.appendChild(this.div);
     }
 
-    public move(){
-
+    public removeGun(){
+        this.div.remove();
     }
 
     public fire(fireDirection:number){

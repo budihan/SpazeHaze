@@ -14,7 +14,7 @@ class Bullet {
         if(s instanceof Enemy){
             this.y = y + 60;
         } else {
-            this.y = y - 50;
+            this.y = y - 60;
         }
         
 
@@ -43,6 +43,10 @@ class Bullet {
     public move(){
         this.y = this.y - this.upSpeed;
         this.div.style.transform = "translate("+this.x+"px, "+this.y+"px)";
+    }
+
+    public removeBullet(){
+        this.div.remove();
     }
 
     public getX():number{

@@ -8,6 +8,8 @@ class Player extends Ship {
     private rightKey: number;
     private fireKey: number;
 
+    private callBack: EventListener;
+
     private upSpeed:number;
     private downSpeed:number;
     private leftSpeed:number;
@@ -57,10 +59,16 @@ class Player extends Ship {
         this.div.style.transform = "translate("+this.x+"px, "+this.y+"px)";
     }
 
+    public removePlayer(){
+        this.gun.removeGun();
+        this.gun = undefined;
+        this.div.remove();
+    }
+
     onKeyDown(event:KeyboardEvent): void {
         switch(event.keyCode){
             case this.upKey:
-                this.upSpeed = 10;
+                this.upSpeed = 8;
                 break;
             case this.downKey:
                 this.downSpeed = 10;

@@ -4,6 +4,7 @@ class Enemy extends Ship {
     private level:Level;
     protected utils:Utils;
     protected downSpeed:number;
+    protected fireInterval:number;
 
     constructor(l:Level, element:string,x:number,y:number,width:number,height:number, speed:number){
         super(l,element,x,y,width,height);
@@ -11,6 +12,8 @@ class Enemy extends Ship {
         this.downSpeed = speed;
 
         this.utils = new Utils();
+
+        this.fireInterval = setInterval(()=>this.fireGun(), 800);
 
     }
 
@@ -34,6 +37,11 @@ class Enemy extends Ship {
     public fireGun(){
         let fireDirection = -1;
         this.gun.fire(fireDirection);
+    }
+
+    public removeEnemy(){
+        this.div.remove();
+        clearInterval(this.fireInterval);
     }
     
     public getX():number{
