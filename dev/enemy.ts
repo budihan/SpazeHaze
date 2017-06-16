@@ -27,7 +27,7 @@ class Enemy extends Ship {
 
     //move left
     public move1(){
-        let leftSpeed = this.utils.getRandomInt(4,6);
+        let leftSpeed = Utils.getRandomInt(4,6);
         this.y = this.y + this.downSpeed;
         this.x = this.x - leftSpeed;
 

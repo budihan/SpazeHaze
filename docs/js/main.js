@@ -105,7 +105,7 @@ var Enemy = (function (_super) {
         this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
     };
     Enemy.prototype.move1 = function () {
-        var leftSpeed = this.utils.getRandomInt(4, 6);
+        var leftSpeed = Utils.getRandomInt(4, 6);
         this.y = this.y + this.downSpeed;
         this.x = this.x - leftSpeed;
         this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
