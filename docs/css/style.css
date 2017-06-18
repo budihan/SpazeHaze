@@ -40,10 +40,10 @@ ship {
     z-index: 2;
 }
 
-enemyBig {
-    background-image: url(../images/1.png);
-    width: 120px;
-    height: 185px;
+enemyFast {
+    background-image: url(../images/3.png);
+    width: 60px;
+    height: 76px;
     z-index: 1;
 }
 

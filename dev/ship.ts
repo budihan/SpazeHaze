@@ -1,7 +1,7 @@
 class Ship {
-    public div: HTMLElement;
-    public x:number;
-    public y:number;
+    protected div: HTMLElement;
+    protected x:number;
+    protected y:number;
     protected gun:Gun;
     protected width:number;
     protected height:number;
@@ -13,14 +13,11 @@ class Ship {
         this.width = width;
         this.height = height;
 
+        //create a gun on every ship
         this.gun = new Gun(l , this, width);
 
+        //set spawn position
         this.setPosition();
-
-    }
-
-    public getDiv():HTMLElement{
-        return this.div;
     }
     protected createDiv(element:string){
         this.div = document.createElement(element);
@@ -31,7 +28,11 @@ class Ship {
         this.div.style.transform = "translate("+this.x+"px, "+this.y+"px)";
     }
 
-     public getX():number{
+    public getDiv():HTMLElement{
+        return this.div;
+    }
+
+    public getX():number{
         return this.x;
     }
 
@@ -45,5 +46,5 @@ class Ship {
 
     public getHeight():number{
         return this.height;
-}
+    }
 }

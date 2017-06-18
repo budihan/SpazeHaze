@@ -12,6 +12,10 @@ class Score {
         this.div.innerHTML = "SCORE: " + this.scoreCount;
     }
 
+    public getScore():number{
+        return this.scoreCount;
+    }
+
     private createDiv(){
         this.div = document.createElement("score");
         this.div.innerHTML = "SCORE: " + this.scoreCount;

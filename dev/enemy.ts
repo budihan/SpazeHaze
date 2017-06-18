@@ -2,7 +2,6 @@
 
 class Enemy extends Ship {
     private level:Level;
-    protected utils:Utils;
     protected downSpeed:number;
     protected fireInterval:number;
 
@@ -11,13 +10,11 @@ class Enemy extends Ship {
 
         this.downSpeed = speed;
 
-        this.utils = new Utils();
-
-        this.fireInterval = setInterval(()=>this.fireGun(), 800);
+        this.fireInterval = setInterval(()=>this.fireGun(), 1200);
 
     }
 
-    //move down
+    //move for normal enemy
     public move(){
         
         this.y = this.y + this.downSpeed;
@@ -25,9 +22,9 @@ class Enemy extends Ship {
         this.div.style.transform = "translate("+this.x+"px, "+this.y+"px)";
     }
 
-    //move left
-    public move1(){
-        let leftSpeed = Utils.getRandomInt(4,6);
+    //move for fast enemy
+    public moveFast(){
+        let leftSpeed = 8;
         this.y = this.y + this.downSpeed;
         this.x = this.x - leftSpeed;
 
@@ -44,20 +41,20 @@ class Enemy extends Ship {
         clearInterval(this.fireInterval);
     }
     
-    public getX():number{
-        return this.x;
-    }
+    // public getX():number{
+    //     return this.x;
+    // }
 
-    public getY():number{
-        return this.y;
-    }
+    // public getY():number{
+    //     return this.y;
+    // }
 
-    public getWidth():number{
-        return this.width;
-    }
+    // public getWidth():number{
+    //     return this.width;
+    // }
 
-    public getHeight():number{
-        return this.height;
-    }
+    // public getHeight():number{
+    //     return this.height;
+    // }
 
 }

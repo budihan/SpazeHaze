@@ -67,15 +67,15 @@ var Ship = (function () {
         this.gun = new Gun(l, this, width);
         this.setPosition();
     }
-    Ship.prototype.getDiv = function () {
-        return this.div;
-    };
     Ship.prototype.createDiv = function (element) {
         this.div = document.createElement(element);
         document.body.appendChild(this.div);
     };
     Ship.prototype.setPosition = function () {
         this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
+    };
+    Ship.prototype.getDiv = function () {
+        return this.div;
     };
     Ship.prototype.getX = function () {
         return this.x;
@@ -96,16 +96,15 @@ var Enemy = (function (_super) {
     function Enemy(l, element, x, y, width, height, speed) {
         var _this = _super.call(this, l, element, x, y, width, height) || this;
         _this.downSpeed = speed;
-        _this.utils = new Utils();
-        _this.fireInterval = setInterval(function () { return _this.fireGun(); }, 800);
+        _this.fireInterval = setInterval(function () { return _this.fireGun(); }, 1200);
         return _this;
     }
     Enemy.prototype.move = function () {
         this.y = this.y + this.downSpeed;
         this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
     };
-    Enemy.prototype.move1 = function () {
-        var leftSpeed = Utils.getRandomInt(4, 6);
+    Enemy.prototype.moveFast = function () {
+        var leftSpeed = 8;
         this.y = this.y + this.downSpeed;
         this.x = this.x - leftSpeed;
         this.div.style.transform = "translate(" + this.x + "px, " + this.y + "px)";
@@ -118,18 +117,6 @@ var Enemy = (function (_super) {
         this.div.remove();
         clearInterval(this.fireInterval);
     };
-    Enemy.prototype.getX = function () {
-        return this.x;
-    };
-    Enemy.prototype.getY = function () {
-        return this.y;
-    };
-    Enemy.prototype.getWidth = function () {
-        return this.width;
-    };
-    Enemy.prototype.getHeight = function () {
-        return this.height;
-    };
     return Enemy;
 }(Ship));
 var EnemyWave = (function () {
@@ -138,11 +125,11 @@ var EnemyWave = (function () {
         this.level = l;
         this.enemies = new Array();
         this.enemiesFast = new Array();
-        this.interval = setInterval(function () { return _this.createEnemy(_this.enemies, "enemySmall", -57, 58, 55, 4); }, 2000);
+        this.interval = setInterval(function () { return _this.createEnemy(_this.enemies, "enemySmall", -57, 58, 55, 1); }, 1000);
     }
     EnemyWave.prototype.createEnemy = function (array, element, y, width, height, speed) {
-        var randomX = Utils.getRandomInt(100, window.innerWidth - 100);
-        array.push(new Enemy(this.level, element, randomX, y, width, height, speed));
+        var random = Utils.getRandomInt(100, window.innerWidth - 100);
+        array.push(new Enemy(this.level, element, random, y, width, height, speed));
     };
     EnemyWave.prototype.move = function () {
         for (var _i = 0, _a = this.enemies; _i < _a.length; _i++) {
@@ -153,7 +140,7 @@ var EnemyWave = (function () {
     EnemyWave.prototype.moveFast = function () {
         for (var _i = 0, _a = this.enemiesFast; _i < _a.length; _i++) {
             var enemy = _a[_i];
-            enemy.move1();
+            enemy.moveFast();
         }
     };
     EnemyWave.prototype.getEnemies = function () {
@@ -161,6 +148,7 @@ var EnemyWave = (function () {
     };
     EnemyWave.prototype.removeWave = function () {
         clearInterval(this.interval);
+        clearInterval(this.intervalFast);
     };
     return EnemyWave;
 }());
@@ -277,7 +265,7 @@ var Gun = (function () {
         else {
             this.div = document.createElement("gun");
         }
-        ship.div.appendChild(this.div);
+        ship.getDiv().appendChild(this.div);
     };
     Gun.prototype.removeGun = function () {
         this.div.remove();
@@ -286,12 +274,12 @@ var Gun = (function () {
         var speed = 0;
         if (this.ship instanceof Player) {
             var speed_1 = 15;
-            var b = new Bullet(this.ship.x, this.ship.y, fireDirection, this.ship, speed_1);
+            var b = new Bullet(this.ship.getX(), this.ship.getY(), fireDirection, this.ship, speed_1);
             this.level.addBullet(b);
         }
         else {
-            var speed_2 = 8;
-            var b = new Bullet(this.ship.x, this.ship.y, fireDirection, this.ship, speed_2);
+            var speed_2 = 5;
+            var b = new Bullet(this.ship.getX(), this.ship.getY(), fireDirection, this.ship, speed_2);
             this.level.addBullet(b);
         }
     };
@@ -305,6 +293,9 @@ var Score = (function () {
     Score.prototype.addScore = function (n) {
         this.scoreCount = this.scoreCount + n;
         this.div.innerHTML = "SCORE: " + this.scoreCount;
+    };
+    Score.prototype.getScore = function () {
+        return this.scoreCount;
     };
     Score.prototype.createDiv = function () {
         this.div = document.createElement("score");
@@ -438,7 +429,7 @@ var Level = (function () {
         this.wave.removeWave();
         var level = this;
         level = undefined;
-        var stop = new Stop(this.game);
+        var stop = new Stop(this.game, this.score);
         this.game.showView(stop);
         this.game = undefined;
         this.bullets = undefined;
@@ -480,17 +471,24 @@ var Start = (function () {
     return Start;
 }());
 var Stop = (function () {
-    function Stop(g) {
+    function Stop(g, s) {
         this.game = g;
+        this.score = s;
         this.createDiv();
     }
     Stop.prototype.createDiv = function () {
-        this.score = document.createElement("score");
-        this.score.innerHTML = "GAME OVER";
-        document.body.appendChild(this.score);
-        var scoreX = window.innerWidth / 2 - 150;
-        var scoreY = window.innerHeight / 2 - 100;
-        this.score.style.transform = "translate(" + scoreX + "px, " + scoreY + "px)";
+        this.endScreen = document.createElement("score");
+        this.endScreen.innerHTML = "GAME OVER";
+        document.body.appendChild(this.endScreen);
+        var endScreenX = window.innerWidth / 2 - 150;
+        var endScreenY = window.innerHeight / 2 - 100;
+        this.endScreen.style.transform = "translate(" + endScreenX + "px, " + endScreenY + "px)";
+        this.scoreScreen = document.createElement("score");
+        this.scoreScreen.innerHTML = "Your score: " + this.score.getScore();
+        document.body.appendChild(this.scoreScreen);
+        var scoreScreenX = window.innerWidth / 2 - 150;
+        var scoreScreenY = window.innerHeight / 2;
+        this.scoreScreen.style.transform = "translate(" + scoreScreenX + "px, " + scoreScreenY + "px)";
     };
     return Stop;
 }());

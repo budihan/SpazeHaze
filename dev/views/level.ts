@@ -111,7 +111,7 @@ class Level implements View {
         var level = this;
         level = undefined;
 
-        let stop = new Stop(this.game);
+        let stop = new Stop(this.game, this.score);
         this.game.showView(stop);
 
         this.game = undefined;

@@ -1,10 +1,13 @@
 class Stop implements View {
     private game:Game;
-    private score:HTMLElement;
+    private score:Score;
+    private endScreen:HTMLElement;
+    private scoreScreen:HTMLElement;
 
 
-    constructor(g:Game){
+    constructor(g:Game, s:Score){
         this.game = g;
+        this.score = s;
 
         this.createDiv();
         
@@ -13,13 +16,24 @@ class Stop implements View {
 
     public createDiv(){
         //score text
-        this.score = document.createElement("score");
-        this.score.innerHTML = "GAME OVER";
-        document.body.appendChild(this.score);
+        this.endScreen = document.createElement("score");
+        this.endScreen.innerHTML = "GAME OVER";
+        document.body.appendChild(this.endScreen);
 
-        let scoreX = window.innerWidth/2 - 150;
-        let scoreY = window.innerHeight/2 - 100;
+        let endScreenX = window.innerWidth/2 - 150;
+        let endScreenY = window.innerHeight/2 - 100;
 
-        this.score.style.transform = "translate("+scoreX+"px, "+scoreY+"px)";
+        this.endScreen.style.transform = "translate("+endScreenX+"px, "+endScreenY+"px)";
+
+        this.scoreScreen = document.createElement("score");
+        this.scoreScreen.innerHTML = "Your score: " + this.score.getScore();
+        document.body.appendChild(this.scoreScreen);
+
+        let scoreScreenX = window.innerWidth/2 - 150;
+        let scoreScreenY = window.innerHeight/2;
+
+        this.scoreScreen.style.transform = "translate("+scoreScreenX+"px, "+scoreScreenY+"px)";
+
+
     }
 }
