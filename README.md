@@ -10,6 +10,7 @@ Criteria inleveropdracht uit de modulewijzer
 ----------------------------------------------------------------------------------------------------------------------------------
 
 Installatiehandleiding:
+
 Om het spel te spelen moet u al de bestanden kloonen, vervolgens start je de game door in de docs map de index.html in de browser te starten. Ook kunt u op www.spazehaze.budihan.nl het spel spelen.
 
 ------------------------------------------------------------------------------------------------------------------------------------
@@ -21,6 +22,7 @@ UML Diagram:
 -------------------------------------------------------------------------------------------------------------------------------------
 
 OOP Principes(Zie UML Diagram):
+
 - Classes en instances
   - Als voorbeeld neem ik de player class. In de level.ts is te zien dat er een player instance wordt aangemaakt met het woord 'new'
 - Encapsulation
