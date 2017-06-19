@@ -10,7 +10,7 @@ Criteria inleveropdracht uit de modulewijzer
 ----------------------------------------------------------------------------------------------------------------------------------
 
 Installatiehandleiding:
-Om het spel te spelen moet u al de bestanden kloonen, vervolgens start je de game door in de docs map de index.html in de browser te starten. Ook kunt op www.spazehaze.budihan.nl het spel spelen.
+Om het spel te spelen moet u al de bestanden kloonen, vervolgens start je de game door in de docs map de index.html in de browser te starten. Ook kunt u op www.spazehaze.budihan.nl het spel spelen.
 
 ------------------------------------------------------------------------------------------------------------------------------------
 
