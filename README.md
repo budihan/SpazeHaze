@@ -31,6 +31,10 @@ OOP Principes(Zie UML Diagram):
   - De game HEEFT een view (zijn start, level en stop). De level heeft schepen (zijn enemy en player), score, EnemyWave(heeft enemy) en een bullet-array. Verder HEEFT elk ship ook een gun
 - Inheritance
   - Als voorbeeld neem ik de ship class. Dit is de parent van de player en enemy klass, want een enemy IS een ship en een player IS ook een ship
+  
+  -----------------------------------------------------------------------------------------------------------------------------------
+  
+  Peer review die ik heb gegeven is hier te vinden: https://github.com/0885787/pgr4_spel/issues/1
 
 
 
