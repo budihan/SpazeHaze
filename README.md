@@ -1,11 +1,3 @@
-Criteria inleveropdracht uit de modulewijzer
-- De code van het project staat op github. Er is een Readme bestand met een installatiehandleiding.
-- De game is online speelbaar via een deelbare url.
-- Er zijn geen bugs.
-- De game heeft een startscherm, spelscherm en eindscherm
-- Er is een klassendiagram gemaakt van de game. Deze is als afbeelding toegevoegd aan het Readme bestand.
-- Het project maakt gebruik van de OOP principes uit de lessen. In het readme bestand wordt toegelicht hoe deze principes gebruikt zijn. 
-- De principes zijn: Classes en instances, Encapsulation, Composition, Inheritance
 
 ----------------------------------------------------------------------------------------------------------------------------------
 
@@ -35,6 +27,16 @@ OOP Principes(Zie UML Diagram):
   -----------------------------------------------------------------------------------------------------------------------------------
   
   Peer review die ik heb gegeven is hier te vinden: https://github.com/0885787/pgr4_spel/issues/1
+  
+  Criteria inleveropdracht uit de modulewijzer
+- De code van het project staat op github. Er is een Readme bestand met een installatiehandleiding.
+- De game is online speelbaar via een deelbare url.
+- Er zijn geen bugs.
+- De game heeft een startscherm, spelscherm en eindscherm
+- Er is een klassendiagram gemaakt van de game. Deze is als afbeelding toegevoegd aan het Readme bestand.
+- Het project maakt gebruik van de OOP principes uit de lessen. In het readme bestand wordt toegelicht hoe deze principes gebruikt zijn. 
+- De principes zijn: Classes en instances, Encapsulation, Composition, Inheritance
+
 
 
 
